@@ -41,5 +41,8 @@
     <ClInclude Include="ClockCountExemple.h">
       <Filter>Arquivos de Cabeçalho\Exemples</Filter>
     </ClInclude>
+    <ClInclude Include="DigitalOutExemple.h">
+      <Filter>Arquivos de Cabeçalho\Exemples</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -33,7 +33,8 @@ C:\arduino_portable\arduino_esp8266\portable\sketchbook\libraries\FidelisDuino
 /*Exemples:*/
 //#include "GeneralExemple.h"
 //#include "ClockExemple.h"
-#include "ClockCountExemple.h"
+//#include "ClockCountExemple.h"
+#include "DigitalOutExemple.h"
 
 void start(int interval, std::function<void(void)> func)
 {

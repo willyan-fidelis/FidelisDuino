@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="ClockCountExemple.h" />
     <ClInclude Include="ClockExemple.h" />
+    <ClInclude Include="DigitalOutExemple.h" />
     <ClInclude Include="FidelisDuino_Input.h" />
     <ClInclude Include="FidelisDuino_Output.h" />
     <ClInclude Include="GeneralExemple.h" />
