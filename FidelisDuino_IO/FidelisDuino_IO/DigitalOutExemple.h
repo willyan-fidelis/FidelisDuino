@@ -52,6 +52,12 @@ void loop()
 			Serial.println("Started!");
 			_DigitalOutput.TurnOff();
 		}
+		if (Serial.readString() == "toggle")
+		{
+			Serial.println("Started!");
+			_DigitalOutput.Toggle();
+		}
+		
 	}
 }
 

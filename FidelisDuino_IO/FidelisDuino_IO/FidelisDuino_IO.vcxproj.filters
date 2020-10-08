@@ -44,5 +44,8 @@
     <ClInclude Include="DigitalOutExemple.h">
       <Filter>Arquivos de Cabeçalho\Exemples</Filter>
     </ClInclude>
+    <ClInclude Include="AnalogicExemple.h">
+      <Filter>Arquivos de Cabeçalho\Exemples</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

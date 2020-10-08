@@ -225,5 +225,80 @@ namespace FidelisDuino {
 			}
 
 		};
+		class Ticker {
+		private:
+			typedef void(*OnTickerEventCallback)();
+			OnTickerEventCallback _OnTickerEvent;
+			OnTickerEventCallback _OnStopTickerEvent;
+			bool started = false;
+			bool tick = false;
+			int _times = 0;
+			int _times_ACC = 0;
+			int _milliseconds = 0;
+			TON TickerTON;
+			bool OnTickerEvent_ONS = false;
+
+			bool _OnTickerEvent_like = false; //Tem mesmo comportamento de '_OnTickerEvent' eevent.
+			bool _OnStopTickerEvent_like = false; //Tem mesmo comportamento de '_OnTickerEvent' eevent.
+		public:
+			void Loop() {
+				_OnTickerEvent_like = false;
+				_OnStopTickerEvent_like = false;
+
+				TickerTON.Loop(_milliseconds, started && tick);
+
+				//Se esta started então retomamos o sinal tick:
+				if (started && !tick)
+				{
+					tick = true;
+				}
+				//Transição para TickerEventCallback --->
+				if (TickerTON.GetOutput() && !OnTickerEvent_ONS)
+				{
+					tick = false;
+					_OnTickerEvent();
+					_OnTickerEvent_like = true;
+					
+					//Verifica se devemos executar por um numero exato de vezes:
+					if (_times > 0)
+					{
+						_times_ACC = _times_ACC + 1;
+						if (_times_ACC >= _times)
+						{
+							started = false;
+							tick = false;
+							_OnStopTickerEvent();
+							_OnStopTickerEvent_like = true;
+						}
+					}
+				}
+				OnTickerEvent_ONS = TickerTON.GetOutput();
+				//Transição para TickerEventCallback <---
+			}
+			bool OnTickerEvent() {
+				return _OnTickerEvent_like;
+			}
+			bool OnStopTickerEvent() {
+				return _OnStopTickerEvent_like;
+			}
+			void attach(int milliseconds, OnTickerEventCallback OnTickerEvent, OnTickerEventCallback OnStopTickerEvent = []() -> void{}, int times = 0) {
+				_milliseconds = milliseconds;
+				_OnTickerEvent = OnTickerEvent;
+				_OnStopTickerEvent = OnStopTickerEvent;
+				_times = times;
+
+				_times_ACC = 0;
+				started = true;
+				tick = true;
+			}
+			void detach() {
+				if (started)
+				{
+					_OnStopTickerEvent();
+				}
+				started = false;
+				tick = false;
+			}
+		};
 	}
 }

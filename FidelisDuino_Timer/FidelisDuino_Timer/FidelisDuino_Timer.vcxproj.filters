@@ -16,6 +16,9 @@
     <Filter Include="Arquivos de Cabeçalho\src">
       <UniqueIdentifier>{82fe8e0e-72c2-41ef-bdf8-ce919480ca3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Cabeçalho\Exemples">
+      <UniqueIdentifier>{ef89c049-5fd2-4355-a749-6e0bb31386de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FidelisDuino_Timer.cpp">
@@ -25,6 +28,9 @@
   <ItemGroup>
     <ClInclude Include="FidelisDuino_Timer.h">
       <Filter>Arquivos de Cabeçalho\src</Filter>
+    </ClInclude>
+    <ClInclude Include="TickerExemple.h">
+      <Filter>Arquivos de Cabeçalho\Exemples</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

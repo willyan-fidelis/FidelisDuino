@@ -155,6 +155,7 @@
     <ClCompile Include="FidelisDuino_IO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnalogicExemple.h" />
     <ClInclude Include="ClockCountExemple.h" />
     <ClInclude Include="ClockExemple.h" />
     <ClInclude Include="DigitalOutExemple.h" />

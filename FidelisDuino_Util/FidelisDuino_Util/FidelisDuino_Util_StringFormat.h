@@ -80,8 +80,8 @@ namespace FidelisDuino {
 				String MACFormat(uint8_t* mac) {
 					//uint8_t mac[6];
 					char macStr[18] = { 0 };
-
-					sprintf(macStr, "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+					//sprintf -> compilador deu um alerta com essa função. TODO: Teste se com sprintf tbem funciona!
+					sprintf_s(macStr, "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 					//sprintf(macStr, "%d:%d:%d:%d:%d:%d", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 					return String(macStr);
 				}

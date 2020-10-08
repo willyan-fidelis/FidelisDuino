@@ -52,6 +52,9 @@ namespace FidelisDuino {
 			void println(std::string msg) {
 				std::cout << msg + "\n";
 			}
+			void println(int msg) {
+				std::cout << std::to_string(msg) + "\n";
+			}
 			void print(const char* msg) {
 				std::cout << msg;
 			}

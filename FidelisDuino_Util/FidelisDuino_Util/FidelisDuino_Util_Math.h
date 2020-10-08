@@ -48,7 +48,7 @@ namespace FidelisDuino {
 			{
 				return (_totalValue * _targetPercent) / _totalPercent;
 			}
-
+			//template <class MapType> //https://www.geeksforgeeks.org/templates-cpp/
 			int map_int(int x, int in_min, int in_max, int out_min, int out_max) {
 				return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 			}

@@ -2,6 +2,7 @@
 
 #include "FidelisDuino_Timer.h"
 #include "FidelisDuino_EdgeDetection.h"
+#include "FidelisDuino_Util.h"
 
 namespace FidelisDuino {
 	namespace IO {
@@ -124,11 +125,103 @@ namespace FidelisDuino {
 					clockCounter.Count(time, time, times);
 					clockCounter.Start();
 				}
+				void Toggle() {
+					if (IsStarted())
+					{
+						TurnOff();
+					}
+					else
+					{
+						TurnOn();
+					}
+				}
 				bool IsStarted() {
 					return TurnState || clockCounter.IsStarted();
 				}
 				bool Out() {
 					return TurnState || clockCounter.Out();
+				}
+			};
+			class AnalogicOutput {
+			private:
+				typedef void(*OnChangeFunction)(int Target, int Out);
+				OnChangeFunction _OnChange;
+				int OutValue = 0;
+				int TargetValue = 0;
+
+				int TargetActual = 0;
+				bool StFadeOn = false;
+				bool StFadeOff = false;
+
+				FidelisDuino::Timer::Ticker ticker;
+				int _msPerPercent = 0;
+				void _Write(int target) {
+					OutValue = FidelisDuino::Util::Math::map_int(target, 0, 100, 0, 1023);
+					_OnChange(target, OutValue);
+				}
+			public:
+				void Loop(int target_min, int target_max, int out_min, int out_max,OnChangeFunction OnChange) {
+					_OnChange = OnChange;
+					ticker.Loop();
+					if (ticker.OnTickerEvent())
+					{
+						if (StFadeOn)
+						{
+							TargetActual = TargetActual + 1;
+							_Write(TargetActual);
+							if (TargetActual >= TargetValue)
+							{
+								ticker.detach();
+								//StFadeOn = false;
+							}
+						}
+						if (StFadeOff)
+						{
+							TargetActual = TargetActual - 1;
+							_Write(TargetActual);
+							if (TargetActual <= 0)
+							{
+								ticker.detach();
+								//StFadeOff = false;
+							}
+						}
+					}
+					if (ticker.OnStopTickerEvent()) {
+						if (StFadeOn)
+						{
+							_Write(TargetValue);
+							StFadeOn = false;
+						}
+						if (StFadeOff)
+						{
+							_Write(0);
+							StFadeOff = false;
+						}
+					}
+				}
+				void Write(int target) {
+					TargetActual = target;
+					StFadeOn = false;
+					StFadeOff = false;
+					OutValue = FidelisDuino::Util::Math::map_int(target, 0, 100, 0, 1023);
+					_OnChange(target, OutValue);
+				}
+				void FadeOn(int value,int msPerPercent) {
+					_msPerPercent = msPerPercent;
+					TargetValue = value;
+
+					TargetActual = 0;
+					StFadeOn = true;
+					StFadeOff = false;
+					ticker.attach(msPerPercent, []()->void {});//OnFadeOnTicker(this);
+				}
+				void FadeOff(int msPerPercent) {
+					_msPerPercent = msPerPercent;
+
+					//TargetActual = 0;
+					StFadeOn = false;
+					StFadeOff = true;
+					ticker.attach(msPerPercent, []()->void {});
 				}
 			};
 		}
