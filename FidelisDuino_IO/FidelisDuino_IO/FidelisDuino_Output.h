@@ -179,7 +179,7 @@ namespace FidelisDuino {
 						{
 							TargetActual = TargetActual - 1;
 							_Write(TargetActual);
-							if (TargetActual <= 0)
+							if (TargetActual <= TargetValue)
 							{
 								ticker.detach();
 								//StFadeOff = false;
@@ -206,22 +206,42 @@ namespace FidelisDuino {
 					OutValue = FidelisDuino::Util::Math::map_int(target, 0, 100, 0, 1023);
 					_OnChange(target, OutValue);
 				}
-				void FadeOn(int value,int msPerPercent) {
+				void Fade(int value, int msPerPercent) {
+					if (value > TargetActual)
+					{
+						FadeOn(value, msPerPercent);
+					}
+					if (value < TargetActual)
+					{
+						FadeOff(value, msPerPercent);
+					}
+				}
+				void FadeOn(int value, int msPerPercent) {
 					_msPerPercent = msPerPercent;
 					TargetValue = value;
 
-					TargetActual = 0;
+					//TargetActual = 0;
 					StFadeOn = true;
 					StFadeOff = false;
 					ticker.attach(msPerPercent, []()->void {});//OnFadeOnTicker(this);
 				}
-				void FadeOff(int msPerPercent) {
+				void FadeOff(int value, int msPerPercent) {
 					_msPerPercent = msPerPercent;
+					TargetValue = value;
 
 					//TargetActual = 0;
 					StFadeOn = false;
 					StFadeOff = true;
 					ticker.attach(msPerPercent, []()->void {});
+				}
+				void ToggleFade(int value, int msPerPercent) {
+					if (TargetActual > 0)
+					{
+						FadeOff(0, msPerPercent);
+					}
+					else {
+						FadeOn(value, msPerPercent);
+					}
 				}
 			};
 		}

@@ -35,12 +35,27 @@ void loop()
 		if (Serial.readString() == "fade-on")
 		{
 			Serial.println("fade-on!");
-			analog.FadeOn(12, 1000);
+			analog.FadeOn(12, 10);
 		}
 		if (Serial.readString() == "fade-off")
 		{
 			Serial.println("fade-off!");
-			analog.FadeOff(1000);
+			analog.FadeOff(0,10);
+		}
+		if (Serial.readString() == "toggle")
+		{
+			Serial.println("toggle!");
+			analog.ToggleFade(12, 10);
+		}
+		if (Serial.readString() == "fade-5")
+		{
+			Serial.println("toggle!");
+			analog.Fade(5, 10);
+		}
+		if (Serial.readString() == "fade-10")
+		{
+			Serial.println("toggle!");
+			analog.Fade(10, 10);
 		}
 	}
 }

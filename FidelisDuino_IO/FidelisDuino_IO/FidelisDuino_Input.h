@@ -70,7 +70,7 @@ namespace FidelisDuino {
 
 						if (_filterDone && !_filterDone_ons)
 						{
-							Serial.println("Filter has been checked!");
+							//Serial.println("Filter has been checked!");
 						}
 						_filterDone_ons = _filterDone;
 					}
