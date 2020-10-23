@@ -202,6 +202,11 @@ namespace FidelisDuino {
 				ActualPage = page;
 				ForceLoadPage = true;
 			}
+
+			//Retorna a pagina atual selecionada:
+			int GetCurrentPage() {
+				return ActualPage;
+			}
 		};
 		class DoubleOrSingleChoiceMenu {
 		private:
@@ -210,8 +215,10 @@ namespace FidelisDuino {
 			int Forced_ActualMenu = 0;
 			int Forced_ActualPage = 0;
 			bool ForceLoadPage = false;
+			bool _IsPushButton = false;
 		public:
 			void Loop(bool IsPushButton, bool input, int MenuClickPulseTime, int MenuClickInativeTime, int PageClickPulseTime, int PageClickInativeTime, int filter, void(*_OnGoInPage)(int page, int menu) = [](int page, int menu)->void {}, void(*_OnGoInMenu)(int menu) = [](int menu)->void {}) {
+				_IsPushButton = IsPushButton;
 				if (IsPushButton)
 				{
 					if (ForceLoadPage)
@@ -234,6 +241,15 @@ namespace FidelisDuino {
 				Forced_ActualMenu = menu;
 				Forced_ActualPage = page;
 				ForceLoadPage = true;
+			}
+			int GetCurrentPage() {
+				if (_IsPushButton)
+				{
+					return pushButton.GetCurrentPage();
+				}
+				else {
+					return toggleButton.GetCurrentPage();
+				}
 			}
 		};
 	}
